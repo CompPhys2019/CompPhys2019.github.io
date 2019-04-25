@@ -1,0 +1,49 @@
+Difficulty Level 1 (11 topics, 1 topic for 1 group only)
+Project-4.18         Page: 62-63
+Project-5.18         Page: 78-79
+Project-6.22         Page: 100-101
+Project-6.23         Page: 101
+Project-6.27         Page: 103
+Project-6.29         Page: 104
+Project-16.32        Page: 367   
+Project-16.33        Page: 367
+Project-16.34        Page: 367
+Project-16.35        Page: 368
+Project-16.36        Page: 368
+
+Difficulty Level 2 (10 topics, 1 topic for no more than 2 groups)
+Project-5.19         Page: 79
+Project-6.28         Page: 103-104
+Project-7.40         Page: 132-133
+Project-8.22         Page: 160
+Project-8.23         Page: 160-161
+Project-15.34        Page: 334-335
+Project-15.38        Page: 338
+Project-15.39        Page: 338-339
+Project-15.40        Page: 339
+Project-15.41        Page: 339-340
+
+Difficulty Level 3 (12 topics, 1 topic for no more than 2 groups))
+Project-6.24         Page: 101-102
+Project-6.26         Page: 102-103
+Project-7.41         Page: 133
+Project-8.24         Page: 161-162
+Project-8.25         Page: 162
+Project-15.32        Page: 333-334
+Project-15.35        Page: 335-336
+Project-15.36        Page: 336-337
+Project-15.37        Page: 337-338
+Project-15.42        Page: 340
+Project-15.43        Page: 340
+Project-15.44        Page: 340-341
+
+Difficulty Level 4 (4 topics, 1 topic for no more than 2 groups))
+Project-8.26        Page: 162-163
+Project-10.26       Page: 213-214
+Project-15.45       Page: 341
+Project-15.46       Page: 341-342
+
+Too easy
+Project-4.17(0.5)   Page: 62
+Project-5.17(0.5)   Page: 78 
+Project-6.25(0.5)   Page: 102
