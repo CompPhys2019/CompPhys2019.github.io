@@ -20,16 +20,15 @@ def bifurcation(x0s,rs,niters=1000,last=100,alpha=0.125):
             xn = iters(niters,r,x0)[-last:]
             r1 = last*[r]
             plt.scatter(r1,xn,marker='o',s=0.1,alpha=alpha,color='black')
-        
         plt.title("Bifurcation diagram with $x_0 = {}$".format(x0))
         plt.xlabel('$r$')
         plt.ylabel('iterated values of x')
-        plt.savefig('bifurcation{:.8f}.eps'.format(x0))
+        plt.savefig('bifurcation{:.8f}.pdf'.format(x0))
     plt.show()
 
 x0s = [0.01,0.1,0.5,0.9]
-# x0s = [0.9]
+# x0s = [0.05]
 rs = np.arange(0.7,1.0,0.0001)
 
-bifurcation(x0s,rs,2000,200,0.05)
+bifurcation(x0s,rs,1000,200,0.055)
 
