@@ -11,8 +11,8 @@
 ! Hints ###########################################################################################
 ! MD simulation is nothing more than solving 2nd ODE(second order difference equation). The       #
 ! addtional step is computing acceleration caused by Lennard-Jones potential, which is the most   #
-! complicated part of program. Once acceleration calulated, we can follow routines of 2dn ODE.    #
-! Contrast to using some familiar algorithm, we use verlet algorithm to simulate 2nd ODE.         # 
+! complicated part of program. Once acceleration calulated, we can follow routines of 2nd ODE.    #
+! Contrast to using some familiar algorithm, we instead use verlet algorithm to simulate 2nd ODE. # 
 !                                                                                                 #
 ! One should notice that particles locate in box uniformly avoiding divergence.                   #
 ! #################################################################################################
@@ -139,7 +139,7 @@ contains
             do j = 1, 2
                 if (r(i,j)<0.d0) then
                     r(i,j) = r(i,j) + L(j)
-                else if (r(i,j)>L(j)) then
+                else if (r(i,j)>=L(j)) then
                     r(i,j) = r(i,j) - L(j)
                 endif
             end do
@@ -209,17 +209,17 @@ module md
     real(8),allocatable::r(:,:),v(:,:),a(:,:)
     ! allocate(r(N,2),v(N,2),a(N,2))
     ! r: position, r(:,1) --> x; r(:,2) --> y
-    ! v: velocity
-    ! a: acceleration
+    ! v: velocity, ditto
+    ! a: acceleration, ditto
     character(32)::fn
 contains
     subroutine init_md
         implicit none
         integer::seed
         integer::i,j,k,N1
-        real(8)::rx,ry,ratio
+        real(8)::rx,ry,ratio,v0
 
-        read(*,*)L, N, dt ,tend, seed, fn
+        read(*,*)L, N, dt ,tend, v0, seed, fn
 
         call initrn(seed)
 
@@ -245,8 +245,8 @@ contains
             ry = ry + ratio
         end do
 
-        v(:,1) = [(rn(),i=1,N)]
-        v(:,2) = [(rn(),i=1,N)]
+        v(:,1) = v0*[(rn(),i=1,N)]
+        v(:,2) = v0*[(rn(),i=1,N)]
 
         call accel(r,a)
         
@@ -256,8 +256,8 @@ contains
         implicit none        
         r = r + v*dt + 0.5d0 * a*dt2
         call pbc(r)
-        v = v + 0.5d0 * a*dt
 
+        v = v + 0.5d0 * a*dt
         call accel(r,a)
         v = v + 0.5d0 * a*dt
     end subroutine verlet
@@ -285,6 +285,7 @@ contains
         Ek = 0.5d0*sum(v*v)
         
         Ep = 0.d0
+        virial = 0.d0
         do i = 1, N-1
             do j = i+1, N
                 dr = disp(r(i,:),r(j,:))
@@ -312,12 +313,16 @@ program main
     real(8)::t
 
     call init_md
-    open(10,file=trim(fn),status='replace')
+    ! initate system
+
+    open(10,file=trim(fn)//'.dat',status='replace')
+    open(11,file=trim(fn)//'_v.dat',status='replace')
     t = 0.d0
     do while(t<=tend)
-        call verlet
-        call measure
+        call verlet ! 2nd ODE
+        call measure ! get E, Ek, Ep, Te, P, vc, nleft
         write(10,'(9f20.8)')t, E, Ek, Ep, Te, P, vc, nleft
+        write(11,'(1000f20.8)')sqrt(sum(v**2,dim=2))
         t = t + dt
     end do
 
