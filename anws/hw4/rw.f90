@@ -184,11 +184,12 @@ contains
 
     end subroutine measure
 
-    subroutine results
+    subroutine results(cnt)
         implicit none
+        integer::cnt
         
-        rm = rm / Nsam
-        dr2 = dr2 / Nsam
+        rm = rm / cnt
+        dr2 = dr2 / cnt
         dr2 = dr2 - rm**2 
 
     end subroutine results
@@ -199,14 +200,14 @@ program main
     use measure_mod
     use RW
     implicit none
-    integer::N, r(2), r_pre(2), seed
+    integer::N, r(2), r_pre(2), seed, cnt
     ! N: walk steps
     ! x,y: coordinate
 
     logical,allocatable::mask(:,:) ! labels visited sites as true. 
     logical::status
 
-    integer::i,j,k
+    integer::i,j,k,step
 
     N = 6 ! set default
     allocate(mask(-N:N,-N:N))
@@ -231,7 +232,7 @@ program main
             end do
             call measure(r)
         end do
-        call results
+        call results(Nsam)
         write(*,*)rm,sum(dr2)
         write(10,*)rm,sum(dr2)
     end do
@@ -250,7 +251,7 @@ program main
             end do
             call measure(r)
         end do
-        call results
+        call results(Nsam)
         write(*,*)rm,sum(dr2)
         write(10,*)rm,sum(dr2)
     end do
@@ -259,16 +260,21 @@ program main
     write(*,*)'Self Avoiding RW: '
     do k = 1, Nbin
         call init_measure
+        cnt = 0
         do i = 1, Nsam
             r = 0
             mask = .false.
             do j = 1, N
                 call Self_Avoiding_RW(r,mask,status)
                 if(status) exit
+                step = j
             end do
-            call measure(r)
+            if( step == N)then
+                cnt = cnt + 1
+                call measure(r)
+            end if
         end do
-        call results
+        call results(cnt)
         write(*,*)rm,sum(dr2)
         write(10,*)rm,sum(dr2)
     end do
